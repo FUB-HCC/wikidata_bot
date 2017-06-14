@@ -16,7 +16,7 @@ logs*
 core/cache/*
 core/.cache
 core/.idea
-core/.ipynb_checkpoints
+core/.ipynb_checkpoints/
 core/pywikibot.egg-info/
 core/pywikibot/families/
 core/build
