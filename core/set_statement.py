@@ -1,0 +1,20 @@
+# -*- coding: utf-8  -*-
+import pywikibot
+site = pywikibot.Site("wikidata", "wikidata")
+repo = site.data_repository()
+item = pywikibot.ItemPage(repo, u"Q42")
+claim = pywikibot.Claim(repo, u'P19')
+target = pywikibot.ItemPage(repo, u"Q350")
+claim.setTarget(target)
+item.addClaim(claim)
+
+site = pywikibot.Site("wikidata", "wikidata")
+repo = site.data_repository()
+item = pywikibot.ItemPage(repo, u"Q42")
+stringclaim = pywikibot.Claim(repo, u'P345')
+stringclaim.setTarget(u"nm0010930")
+item.addClaim(stringclaim)
+coordinateclaim  = pywikibot.Claim(repo, u'P625')
+coordinate = pywikibot.Coordinate(lat=52.208, lon=0.1225, precision=0.001)
+coordinateclaim.setTarget(coordinate)
+item.addClaim(coordinateclaim)
