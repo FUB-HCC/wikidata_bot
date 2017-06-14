@@ -1,1 +1,0 @@
-("wikidata", "wikidata", "mfnest", "MogiMogi0")
