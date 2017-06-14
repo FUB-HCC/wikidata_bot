@@ -1,5 +1,7 @@
 throttle.ctrl
 pywikibot.lwp
+namen.csv
+examples/*
 user-*.py
 *.bak
 *.pyc
@@ -14,8 +16,10 @@ logs*
 /cache/*
 .cache
 .idea
+.ipynb_checkpoints
 pywikibot.egg-info/
 pywikibot/families/
 build
 dist
 docs/_build/
+pwd.txt
