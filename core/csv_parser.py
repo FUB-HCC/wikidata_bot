@@ -1,7 +1,8 @@
 from pywikibot.data import api
 
+
 # TODO: Documentation
-class CSVPareser:
+class CSVParser:
     def __init__(self, site):
         self.site = site
 

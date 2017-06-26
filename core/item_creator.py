@@ -1,8 +1,9 @@
 import pywikibot
+import datetime
+
 
 # TODO: Documentation
 class ItemCreator:
-
     def __init__(self, site):
         self.site = site
 
@@ -37,17 +38,28 @@ class ItemCreator:
         item.addClaim(claim, bot=True, summary='Adding claim with property ' + property + '.')
         return claim
 
-    def __create_source_claim(self, claim, property, source_data):
-        trgt_item, ref_url = source_data
-        trgt_itempage = pywikibot.ItemPage(self.site, trgt_item)
-        source_claim = pywikibot.Claim(self.site, property, isReference=True)
-        source_claim.setTarget(trgt_itempage)
+    def __create_source_claim(self, claim, source_data):
         # TODO: Clarify what is needed (url or item)
-        # source_claim = pywikibot.Claim(self.site, property, isReference=True)
-        # source_claim.setTarget(ref_url)
+        # TODO: Clarify if P854 (reference URL) or P143 (imported from) or P813 (retrieved) or all are needed
+        trgt_item, ref_url = source_data
+
+        trgt_itempage = pywikibot.ItemPage(self.site, trgt_item)
+        item_source_claim = pywikibot.Claim(self.site, 'P143', isReference=True)
+        item_source_claim.setTarget(trgt_itempage)
+
+        url_source_claim = pywikibot.Claim(self.site, 'P854', isReference=True)
+        url_source_claim.setTarget(ref_url)
+
+        date_source_claim = pywikibot.Claim(self.site, 'P813', isReference=True)
+        date = datetime.datetime.now()
+        trgt_datetime = pywikibot.WbTime(year=date.year, month=date.month, day=date.day)
+        date_source_claim.setTarget(trgt_datetime)
+
         # TODO: Clarify if botflag is needed here
-        claim.addSources([source_claim])
+        claim.addSources([item_source_claim, url_source_claim, trgt_datetime])
+
         return True
+
 
     def create_item(self, data):
         item = self.__new_item
@@ -59,4 +71,4 @@ class ItemCreator:
         for key in data:
             if key != 'lables' and key != 'aliases' and key != 'descriptions' and key != 'source':
                 claim = self.__set_claim(item, key, data[key])
-                self.__create_source_claim(claim, data["source"])
+                self.__create_source_claim(claim,data["source"])
