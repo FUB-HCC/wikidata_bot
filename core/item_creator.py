@@ -3,6 +3,7 @@ import datetime
 
 
 # TODO: Documentation
+# TODO: Testing on test.wikidata
 class ItemCreator:
     def __init__(self, site):
         self.site = site
