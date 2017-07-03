@@ -15,10 +15,10 @@ class ItemCreator:
     @staticmethod
     def add_terms(item, data):
         # TODO: Clarify if bot flag is needed here
-        item.editLabels(labels=data['labels'], summary="Setting labels")
+        item.editLabels(labels=data['labels'], bot=True, summary="Setting labels")
         if 'aliases' in data:
-            item.editAliases(aliases=data['aliases'], summary="Setting aliases")
-        item.editDescriptions(descriptions=data['descriptions'], summary="Setting descriptions")
+            item.editAliases(aliases=data['aliases'], bot=True, summary="Setting aliases")
+        item.editDescriptions(descriptions=data['descriptions'], bot=True, summary="Setting descriptions")
 
     # Edit count = 1
     @staticmethod
