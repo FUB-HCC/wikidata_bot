@@ -2,11 +2,6 @@ import pywikibot
 from pywikibot.data import api
 import datetime
 
-
-# TODO: Clarify if bot flags are set right -> Will be proved while bot request
-# TODO: Clarify if bot flag is needed for new_item -> Will be proved while bot request
-# TODO: Clarify if calender model attribute works in add_claim -> Will be proved while testing / bot request
-
 class ItemCreator:
     """
     Wrapper Class for creating and editing an item.
@@ -200,9 +195,9 @@ class ItemHelper:
             return None
 
         if mode == 'gender':
-            if item_title.lower() == 'weiblich':
+            if item_title == '0':
                 return 'Q6581072'
-            elif item_title.lower() == 'männlich':
+            elif item_title == '1':
                 return 'Q6581097'
         else:
             qids = ItemHelper.get_qids(APICaller.wbsearchentities(site, item_title, 'de'))

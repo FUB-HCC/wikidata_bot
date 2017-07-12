@@ -1,7 +1,6 @@
 import csv
 from judge_item import ItemHelper
 
-# TODO: Clarify if label can be in other languages
 
 class CSVParser:
     """

@@ -6,10 +6,13 @@ import time
 import yaml
 import logging
 
-
-# TODO: Documentation
+# TODO: Clarify if label can be in other languages
+# TODO: Consider that Wikipedia data will be included as well
 # TODO: Test again on test.wikidata
+# TODO: Clarify if calender model attribute works in add_claim -> Will be proved while testing / bot request
 # TODO: Start the bot request
+# TODO: Clarify if bot flags are set right -> Will be proved while bot request
+# TODO: Clarify if bot flag is needed for new_item -> Will be proved while bot request
 
 with open('config.yaml', 'r', encoding='utf-8') as file:
     config = yaml.load(file)
