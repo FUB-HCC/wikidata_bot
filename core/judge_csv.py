@@ -22,13 +22,16 @@ class CSVParser:
         """
         # Labels for the data
         if row['Namenszusatz'] != '':
-            data = {'labels': {'de': "%s %s %s" % (row['Vorname'], row['Namenszusatz'], row['Nachname'])}}
+            data = {'labels': {'de': "%s %s %s" % (row['Vorname'], row['Namenszusatz'], row['Nachname'])},
+                    'labels': {'en': "%s %s %s" % (row['Vorname'], row['Namenszusatz'], row['Nachname'])}}
         else:
-            data = {'labels': {'de': "%s %s" % (row['Vorname'], row['Nachname'])}}
+            data = {'labels': {'de': "%s %s" % (row['Vorname'], row['Nachname'])},
+                    'labels': {'en': "%s %s" % (row['Vorname'], row['Nachname'])}}
 
         # Aliases for the data
         if row['Namenszusatz'] != '':
-            data['aliases'] = {'de': "%s %s %s" % (row['Vorname'], row['Nachname'])}
+            data['aliases'] = {'de': "%s %s %s" % (row['Vorname'], row['Nachname']),
+                               'en': "%s %s %s" % (row['Vorname'], row['Nachname'])}
 
         # Descriptions for the data
         if row['Geschlecht'] == '1':

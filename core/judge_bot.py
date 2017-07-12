@@ -6,7 +6,6 @@ import time
 import yaml
 import logging
 
-# TODO: Clarify if label can be in other languages
 # TODO: Consider that Wikipedia data will be included as well
 # TODO: Test again on test.wikidata
 # TODO: Clarify if calender model attribute works in add_claim -> Will be proved while testing / bot request
