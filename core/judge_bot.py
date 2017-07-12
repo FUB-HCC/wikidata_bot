@@ -6,8 +6,10 @@ import time
 import yaml
 import logging
 
+
 # TODO: Documentation
-# TODO: Fulfil all bot requirements (https://www.wikidata.org/wiki/Wikidata:Bots)
+# TODO: Test again on test.wikidata
+# TODO: Start the bot request
 
 with open('config.yaml', 'r', encoding='utf-8') as file:
     config = yaml.load(file)
