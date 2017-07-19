@@ -22,16 +22,118 @@ class CSVParser:
         """
         # Labels for the data
         if row['Namenszusatz'] != '':
-            data = {'labels': {'de': "%s %s %s" % (row['Vorname'], row['Namenszusatz'], row['Nachname'])},
-                    'labels': {'en': "%s %s %s" % (row['Vorname'], row['Namenszusatz'], row['Nachname'])}}
+            label = "%s %s %s" % (row['Vorname'], row['Namenszusatz'], row['Nachname'])
         else:
-            data = {'labels': {'de': "%s %s" % (row['Vorname'], row['Nachname'])},
-                    'labels': {'en': "%s %s" % (row['Vorname'], row['Nachname'])}}
+            label = "%s %s" % (row['Vorname'], row['Nachname'])
+
+        data = {'labels': {'de': label,
+                           'en': label,
+                           'af': label,
+                           'an': label,
+                           'ast': label,
+                           'bar': label,
+                           'br': label,
+                           'ca': label,
+                           'cs': label,
+                           'da': label,
+                           'de-ch': label,
+                           'de-at': label,
+                           'es': label,
+                           'dsb': label,
+                           'eo': label,
+                           'et': label,
+                           'eu': label,
+                           'ext': label,
+                           'fi': label,
+                           'fr': label,
+                           'frc': label,
+                           'frp': label,
+                           'fy': label,
+                           'frr': label,
+                           'ga': label,
+                           'gl': label,
+                           'hr': label,
+                           'hu': label,
+                           'hsb': label,
+                           'stq': label,
+                           'is': label,
+                           'it': label,
+                           'id': label,
+                           'lb': label,
+                           'ms': label,
+                           'nds': label,
+                           'nl': label,
+                           'no': label,
+                           'nn': label,
+                           'oc': label,
+                           'pdc': label,
+                           'pl': label,
+                           'pap': label,
+                           'pdt': label,
+                           'pt': label,
+                           'ro': label,
+                           'sco': label,
+                           'sk': label,
+                           'sl': label,
+                           'sv': label,
+                           'tr': label
+                           }}
 
         # Aliases for the data
         if row['Namenszusatz'] != '':
-            data['aliases'] = {'de': "%s %s %s" % (row['Vorname'], row['Nachname']),
-                               'en': "%s %s %s" % (row['Vorname'], row['Nachname'])}
+            aliases = ["%s %s" % (row['Vorname'], row['Nachname'])]
+            data['aliases'] = {'de': aliases,
+                               'en': aliases,
+                               'af': aliases,
+                               'an': aliases,
+                               'ast': aliases,
+                               'bar': aliases,
+                               'br': aliases,
+                               'ca': aliases,
+                               'cs': aliases,
+                               'da': aliases,
+                               'de-ch': aliases,
+                               'de-at': aliases,
+                               'es': aliases,
+                               'dsb': aliases,
+                               'eo': aliases,
+                               'et': aliases,
+                               'eu': aliases,
+                               'ext': aliases,
+                               'fi': aliases,
+                               'fr': aliases,
+                               'frc': aliases,
+                               'frp': aliases,
+                               'fy': aliases,
+                               'frr': aliases,
+                               'ga': aliases,
+                               'gl': aliases,
+                               'hr': aliases,
+                               'hu': aliases,
+                               'hsb': aliases,
+                               'stq': aliases,
+                               'is': aliases,
+                               'it': aliases,
+                               'id': aliases,
+                               'lb': aliases,
+                               'ms': aliases,
+                               'nds': aliases,
+                               'nl': aliases,
+                               'no': aliases,
+                               'nn': aliases,
+                               'oc': aliases,
+                               'pdc': aliases,
+                               'pl': aliases,
+                               'pap': aliases,
+                               'pdt': aliases,
+                               'pt': aliases,
+                               'ro': aliases,
+                               'sco': aliases,
+                               'sk': aliases,
+                               'sl': aliases,
+                               'sv': aliases,
+                               'tr': aliases,
+                               }
 
         # Descriptions for the data
         if row['Geschlecht'] == '1':
@@ -55,57 +157,73 @@ class CSVParser:
                                     }
 
         # P31 = instance of, Q5 = human
-        data['P31'] = 'Q5'
-        # data['P82'] = 'Q26'
+        # data['P31'] = 'Q5'
+        data['P82'] = 'Q26'
 
         # P569 = date of birth
         date_of_birth = CSVParser.parse_date(row['G-J'], row['G-M'], row['G-T'])
         if date_of_birth is not None:
-            data['P569'] = date_of_birth
-            # data['P18'] = date_of_birth
+            # data['P569'] = date_of_birth
+            data['P18'] = date_of_birth
 
         # P570 = date of death
         date_of_death = CSVParser.parse_date(row['T-J'], row['T-M'], row['T-T'])
         if date_of_death is not None:
-            data['P570'] = date_of_death
+            # data['P570'] = date_of_death
+            data['P25'] = date_of_death
 
         # P21 = sex or gender
-        data['P21'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
+        # data['P21'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
+        data['P192'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
 
         # P27 = country of citizenship, Q183 = Germany
-        data['P27'] = 'Q183'
-        # data['P196'] = 'Q343'
+        # data['P27'] = 'Q183'
+        data['P196'] = 'Q343'
 
         # P19 = place of birth
         place_of_birth = ItemHelper.get_qid(site, row['G-Ort'], 'city')
         if place_of_birth is not None:
-            data['P19'] = place_of_birth
-            # data['P342'] = place_of_birth
+            # data['P19'] = place_of_birth
+            data['P342'] = place_of_birth
 
-        # P20 = place of death
-        place_of_death = ItemHelper.get_qid(site, row['S-Ort'], 'city')
-        if place_of_death is not None:
-            data['P20'] = place_of_death
+            # P20 = place of death
+            # place_of_death = ItemHelper.get_qid(site, row['S-Ort'], 'city')
+            # if place_of_death is not None:
+            # data['P20'] = place_of_death
+            # data['P764'] = place_of_death
 
         # P735 = given name
         given_name = ItemHelper.get_qid(site, row['Vorname'], 'given_name')
         if given_name is not None:
-            data['P735'] = given_name
-            # data['P187'] = given_name
+            # data['P735'] = given_name
+            data['P187'] = given_name
 
         # P734 = family name
         family_name = ItemHelper.get_qid(site, row['Nachname'], 'family_name')
         if family_name is not None:
-            data['P734'] = family_name
-            # data['P36616'] = family_name
+            # data['P734'] = family_name
+            data['P36616'] = family_name
 
         # P106 = occupation, Q16533 = judge
-        data['P106'] = 'Q16533'
-        # data['P204'] = 'Q72884'
+        # data['P106'] = 'Q16533'
+        data['P204'] = 'Q72884'
 
         # Source of the data
-        data['source'] = ['http://www.richter-im-internet.de', 'Q32961325']
-        # data['source'] = ['http://www.richter-im-internet.de', 'Q72885']
+        if row['Wikipedia'] == '0':
+            # data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
+            #                  'stated_in': 'Q32961325',
+            #                  'imported_from': None}
+            data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
+                              'stated_in': 'Q72885',
+                              'imported_from': None}
+
+        else:
+            # data['source'] = {'reference_url': None,
+            #                  'stated_in': None,
+            #                  'imported_from': 'Q48183'}
+            data['source'] = {'reference_url': None,
+                              'stated_in': None,
+                              'imported_from': 'Q74404'}
 
         return data
 
@@ -128,20 +246,21 @@ class CSVParser:
             return None
         elif month == '':
             # Q12138 = Gregorian Calender Model
-            return [int(year), None, None, 'Q12138']
-            # return [int(year), None, None, 'Q72886']
+            # return [int(year), None, None, 'Q12138']
+            return [int(year), None, None, 'Q72886']
         elif day == '':
-            return [int(year), int(month), None, 'Q12138']
-            # return [int(year), int(month), None, 'Q72886']
+            # return [int(year), int(month), None, 'Q12138']
+            return [int(year), int(month), None, 'Q72886']
         else:
-            return [int(year), int(month), int(day), 'Q12138']
-            # return [int(year), int(month), int(day), 'Q72886']
+            # return [int(year), int(month), int(day), 'Q12138']
+            return [int(year), int(month), int(day), 'Q72886']
 
 
 class CSVWriter:
     """
     Helper Class for writing data into csv.
     """
+
     @staticmethod
     def write_item_in_csv(csv_file, qid, first_name, family_name):
         """

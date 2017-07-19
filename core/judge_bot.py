@@ -6,12 +6,9 @@ import time
 import yaml
 import logging
 
-# TODO: Consider that Wikipedia data will be included as well
-# TODO: Test again on test.wikidata
-# TODO: Clarify if calender model attribute works in add_claim -> Will be proved while testing / bot request
+# TODO: Test one item in wikidata
+# TODO: Clarify if calender model attribute works in add_claim
 # TODO: Start the bot request
-# TODO: Clarify if bot flags are set right -> Will be proved while bot request
-# TODO: Clarify if bot flag is needed for new_item -> Will be proved while bot request
 
 with open('config.yaml', 'r', encoding='utf-8') as file:
     config = yaml.load(file)
@@ -66,6 +63,7 @@ with open(config['data_file'], newline='') as file:
                 CSVWriter.write_item_in_csv(config['result_file'], qid, row['Vorname'], row['Nachname'])
                 logging.info("The item was saved to csv file")
             else:
+                CSVWriter.write_item_in_csv(config['result_file'], '', row['Vorname'], row['Nachname'])
                 logging.info("Check if item with name %s %s exist: True" % (row['Vorname'], row['Nachname']))
         except ValueError as error:
             logging.warning(repr(error))

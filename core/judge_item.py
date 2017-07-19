@@ -1,6 +1,8 @@
 import pywikibot
 from pywikibot.data import api
 import datetime
+import logging
+
 
 class ItemCreator:
     """
@@ -62,9 +64,9 @@ class ItemCreator:
             target = pywikibot.ItemPage(site, data)
         elif claim.type == 'time':
             year, month, day, model = data
-            model_uri = "%s%s" % (site.concept_base_uri, model)
-            target = pywikibot.WbTime(year=year, month=month, day=day, calendarmodel=model_uri)
-            # target = pywikibot.WbTime(year=year, month=month, day=day)
+            # model_uri = "%s%s" % (site.concept_base_uri, model)
+            # target = pywikibot.WbTime(year=year, month=month, day=day, calendarmodel=model_uri)
+            target = pywikibot.WbTime(year=year, month=month, day=day)
         elif claim.type == 'quantity':
             value, uncert, unit = data
             value, uncert = float(value), float(uncert)
@@ -74,7 +76,7 @@ class ItemCreator:
             return None
 
         claim.setTarget(target)
-        item.addClaim(claim, bot=True, summary='A claim was created by a bot')
+        item.addClaim(claim, bot=True, summary='A new claim was created by a bot')
         return claim
 
     # edit_count = 1
@@ -93,28 +95,40 @@ class ItemCreator:
         @return: A value which indicates if adding the claim was successful
         @rtype: bool
         """
-        ref_url, trgt_item = data
 
-        # P248 = stated in
-        trgt_itempage = pywikibot.ItemPage(site, trgt_item)
-        item_source_claim = pywikibot.Claim(site, 'P248', isReference=True)
-        # item_source_claim = pywikibot.Claim(site, 'P9', isReference=True)
-        item_source_claim.setTarget(trgt_itempage)
+        if data['reference_url'] is not None:
+            # P854 = reference URL
+            # url_source_claim = pywikibot.Claim(site, 'P854', isReference=True)
+            url_source_claim = pywikibot.Claim(site, 'P93', isReference=True)
+            url_source_claim.setTarget(data['reference_url'])
 
-        # P854 = reference URL
-        url_source_claim = pywikibot.Claim(site, 'P854', isReference=True)
-        # url_source_claim = pywikibot.Claim(site, 'P93', isReference=True)
-        url_source_claim.setTarget(ref_url)
+        if data['stated_in'] is not None:
+            # P248 = stated in
+            trgt_itempage = pywikibot.ItemPage(site, data['stated_in'])
+            # item_source_claim = pywikibot.Claim(site, 'P248', isReference=True)
+            item_source_claim = pywikibot.Claim(site, 'P149', isReference=True)
+            item_source_claim.setTarget(trgt_itempage)
+
+        if data['imported_from'] is not None:
+            # P143 = imported from
+            trgt_itempage = pywikibot.ItemPage(site, data['imported_from'])
+            # item_source_claim = pywikibot.Claim(site, 'P143', isReference=True)
+            item_source_claim = pywikibot.Claim(site, 'P9', isReference=True)
+            item_source_claim.setTarget(trgt_itempage)
 
         # P813 = retrieved
-        date_source_claim = pywikibot.Claim(site, 'P813', isReference=True)
-        # date_source_claim = pywikibot.Claim(site, 'P388', isReference=True)
+        # date_source_claim = pywikibot.Claim(site, 'P813', isReference=True)
+        date_source_claim = pywikibot.Claim(site, 'P388', isReference=True)
         date = datetime.datetime.now()
         trgt_datetime = pywikibot.WbTime(year=date.year, month=date.month, day=date.day)
         date_source_claim.setTarget(trgt_datetime)
 
-        claim.addSources([item_source_claim, url_source_claim, date_source_claim], bot=True,
-                         summary='Sources were added by a bot')
+        if data['reference_url'] is None:
+            claim.addSources([item_source_claim, date_source_claim], bot=True,
+                             summary='New sources were added to a claim by a bot')
+        else:
+            claim.addSources([item_source_claim, url_source_claim, date_source_claim], bot=True,
+                         summary='New sources were added to a claim by a bot')
 
         return True
 
@@ -137,7 +151,8 @@ class ItemCreator:
         for key in data:
             if key != 'labels' and key != 'aliases' and key != 'descriptions' and key != 'source':
                 claim = ItemCreator.add_claim(site, item, key, data[key])
-                ItemCreator.add_sources(site, claim, data['source'])
+                if claim is not None:
+                    ItemCreator.add_sources(site, claim, data['source'])
         return item.getID()
 
 
@@ -145,6 +160,7 @@ class ItemHelper:
     """
     Helper Class for an item.
     """
+
     @staticmethod
     def item_exist(site, data):
         """
@@ -196,9 +212,11 @@ class ItemHelper:
 
         if mode == 'gender':
             if item_title == '0':
-                return 'Q6581072'
+                # return 'Q6581072'
+                return 'Q1341'
             elif item_title == '1':
-                return 'Q6581097'
+                # return 'Q6581097'
+                return 'Q505'
         else:
             qids = ItemHelper.get_qids(APICaller.wbsearchentities(site, item_title, 'de'))
             qids += ItemHelper.get_qids(APICaller.wbsearchentities(site, item_title, 'en'))
@@ -261,7 +279,7 @@ class APICaller:
         """
         params = {'action': 'wbgetentities',
                   'format': 'json',
-                  'assert': 'user',
+                  # 'assert': 'user',
                   'ids': '|'.join(ids)
                   }
         request = api.Request(site=site, **params)
