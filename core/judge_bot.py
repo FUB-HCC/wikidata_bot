@@ -6,8 +6,9 @@ import time
 import yaml
 import logging
 
-# TODO: Test one item in wikidata
-# TODO: Clarify if calender model attribute works in add_claim
+# TODO: Solve mentioned Problems in Wikidata message
+# TODO: Transfer bot from local pc to server
+# TODO: Test one more item in wikidata
 # TODO: Start the bot request
 
 with open('config.yaml', 'r', encoding='utf-8') as file:

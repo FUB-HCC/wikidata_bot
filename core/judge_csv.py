@@ -139,91 +139,91 @@ class CSVParser:
         if row['Geschlecht'] == '1':
             data['descriptions'] = {'de': 'deutscher Jurist, Richter am Bundesgerichtshof',
                                     'en': 'German judge, Federal Court of Justice',
-                                    'fr': 'Juge allemand, Cour Fédérale de Justice',
-                                    'it': 'Giudice tedesco, Corte di Cassazione Federale',
-                                    'es': 'Juez alemán, Tribunal Federal Supremo',
-                                    'pl': 'Niemiecki sędzia, Trybunał Federalny',
+                                    'fr': 'juge allemand, Cour Fédérale de Justice',
+                                    'it': 'giudice tedesco, Corte di Cassazione Federale',
+                                    'es': 'juez alemán, Tribunal Federal Supremo',
+                                    'pl': 'niemiecki sędzia, Trybunał Federalny',
                                     'nl': 'Duits rechter, Federale Gerechtshof',
                                     'zh': '德国法律学者, 德国联邦最高法院'}
         else:
             data['descriptions'] = {'de': 'deutsche Juristin, Richterin am Bundesgerichtshof',
                                     'en': 'German judge, Federal Court of Justice',
-                                    'fr': 'Juge allemande, Cour Fédérale de Justice',
-                                    'it': 'Giudice tedesca, Corte di Cassazione Federale',
-                                    'es': 'Jueza alemana, Tribunal Federal Supremo',
-                                    'pl': 'Niemiecki sędzia, Trybunał Federalny',
+                                    'fr': 'juge allemande, Cour Fédérale de Justice',
+                                    'it': 'giudice tedesca, Corte di Cassazione Federale',
+                                    'es': 'jueza alemana, Tribunal Federal Supremo',
+                                    'pl': 'niemiecki sędzia, Trybunał Federalny',
                                     'nl': 'Duits rechter, Federale Gerechtshof',
                                     'zh': '德国法律学者, 德国联邦最高法院'
                                     }
 
         # P31 = instance of, Q5 = human
-        # data['P31'] = 'Q5'
-        data['P82'] = 'Q26'
+        data['P31'] = 'Q5'
+        # data['P82'] = 'Q26'
 
         # P569 = date of birth
         date_of_birth = CSVParser.parse_date(row['G-J'], row['G-M'], row['G-T'])
         if date_of_birth is not None:
-            # data['P569'] = date_of_birth
-            data['P18'] = date_of_birth
+            data['P569'] = date_of_birth
+            # data['P18'] = date_of_birth
 
         # P570 = date of death
         date_of_death = CSVParser.parse_date(row['T-J'], row['T-M'], row['T-T'])
         if date_of_death is not None:
-            # data['P570'] = date_of_death
-            data['P25'] = date_of_death
+            data['P570'] = date_of_death
+            # data['P25'] = date_of_death
 
         # P21 = sex or gender
-        # data['P21'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
-        data['P192'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
+        data['P21'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
+        # data['P192'] = ItemHelper.get_qid(site, row['Geschlecht'], 'gender')
 
         # P27 = country of citizenship, Q183 = Germany
-        # data['P27'] = 'Q183'
-        data['P196'] = 'Q343'
+        data['P27'] = 'Q183'
+        # data['P196'] = 'Q343'
 
         # P19 = place of birth
         place_of_birth = ItemHelper.get_qid(site, row['G-Ort'], 'city')
         if place_of_birth is not None:
-            # data['P19'] = place_of_birth
-            data['P342'] = place_of_birth
+            data['P19'] = place_of_birth
+            # data['P342'] = place_of_birth
 
-            # P20 = place of death
-            # place_of_death = ItemHelper.get_qid(site, row['S-Ort'], 'city')
-            # if place_of_death is not None:
-            # data['P20'] = place_of_death
-            # data['P764'] = place_of_death
+        # P20 = place of death
+        # place_of_death = ItemHelper.get_qid(site, row['S-Ort'], 'city')
+        # if place_of_death is not None:
+        # data['P20'] = place_of_death
+        # data['P764'] = place_of_death
 
         # P735 = given name
         given_name = ItemHelper.get_qid(site, row['Vorname'], 'given_name')
         if given_name is not None:
-            # data['P735'] = given_name
-            data['P187'] = given_name
+            data['P735'] = given_name
+            # data['P187'] = given_name
 
         # P734 = family name
         family_name = ItemHelper.get_qid(site, row['Nachname'], 'family_name')
         if family_name is not None:
-            # data['P734'] = family_name
-            data['P36616'] = family_name
+            data['P734'] = family_name
+            # data['P36616'] = family_name
 
         # P106 = occupation, Q16533 = judge
-        # data['P106'] = 'Q16533'
-        data['P204'] = 'Q72884'
+        data['P106'] = 'Q16533'
+        # data['P204'] = 'Q72884'
 
         # Source of the data
         if row['Wikipedia'] == '0':
-            # data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
-            #                  'stated_in': 'Q32961325',
-            #                  'imported_from': None}
             data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
-                              'stated_in': 'Q72885',
+                              'stated_in': 'Q32961325',
                               'imported_from': None}
+            # data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
+            #                  'stated_in': 'Q72885',
+            #                  'imported_from': None}
 
         else:
-            # data['source'] = {'reference_url': None,
-            #                  'stated_in': None,
-            #                  'imported_from': 'Q48183'}
             data['source'] = {'reference_url': None,
                               'stated_in': None,
-                              'imported_from': 'Q74404'}
+                              'imported_from': 'Q48183'}
+            # data['source'] = {'reference_url': None,
+            #                  'stated_in': None,
+            #                  'imported_from': 'Q74404'}
 
         return data
 
@@ -246,14 +246,14 @@ class CSVParser:
             return None
         elif month == '':
             # Q12138 = Gregorian Calender Model
-            # return [int(year), None, None, 'Q12138']
-            return [int(year), None, None, 'Q72886']
+            return [int(year), None, None, 'Q12138']
+            # return [int(year), None, None, 'Q72886']
         elif day == '':
-            # return [int(year), int(month), None, 'Q12138']
-            return [int(year), int(month), None, 'Q72886']
+            return [int(year), int(month), None, 'Q12138']
+            # return [int(year), int(month), None, 'Q72886']
         else:
-            # return [int(year), int(month), int(day), 'Q12138']
-            return [int(year), int(month), int(day), 'Q72886']
+            return [int(year), int(month), int(day), 'Q12138']
+            # return [int(year), int(month), int(day), 'Q72886']
 
 
 class CSVWriter:
