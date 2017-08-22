@@ -6,11 +6,6 @@ import time
 import yaml
 import logging
 
-# TODO: Solve mentioned Problems in Wikidata message
-# TODO: Transfer bot from local pc to server
-# TODO: Test one more item in wikidata
-# TODO: Start the bot request
-
 with open('config.yaml', 'r', encoding='utf-8') as file:
     config = yaml.load(file)
 
