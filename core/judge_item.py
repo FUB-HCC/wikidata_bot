@@ -78,6 +78,28 @@ class ItemCreator:
         item.addClaim(claim, bot=True, summary='A new claim was created by a bot')
         return claim
 
+    # edit_count = 1 per qualifier
+    @staticmethod
+    def add_qualifiers(site, claim, qualifiers):
+        """
+        Helper function to add qualifiers to a claim.
+        @param site: The data repository where the qualifiers will be added
+        @type site: pywikibot.site.DataSite
+        @param claim: The claim to which the qualifiers will be added
+        @type claim: pywikibot.page.Claim
+        @param qualifiers: The qualifiers which will be added to the claim
+        @type qualifiers: dict
+        """
+
+        for qualifier in qualifiers:
+            wiki_qualifier = pywikibot.Claim(site, qualifier, isQualifier=True)
+            if wiki_qualifier.type == 'time':
+                year, month, day, model = qualifiers[qualifier]
+                target = pywikibot.WbTime(year=year, month=month, day=day)
+                wiki_qualifier.setTarget(target)
+                claim.addQualifier(wiki_qualifier)
+
+
     # edit_count = 1
     @staticmethod
     def add_sources(site, claim, data):
@@ -97,27 +119,27 @@ class ItemCreator:
 
         if data['reference_url'] is not None:
             # P854 = reference URL
-            url_source_claim = pywikibot.Claim(site, 'P854', isReference=True)
-            # url_source_claim = pywikibot.Claim(site, 'P93', isReference=True)
+            # url_source_claim = pywikibot.Claim(site, 'P854', isReference=True)
+            url_source_claim = pywikibot.Claim(site, 'P93', isReference=True)
             url_source_claim.setTarget(data['reference_url'])
 
         if data['stated_in'] is not None:
             # P248 = stated in
             trgt_itempage = pywikibot.ItemPage(site, data['stated_in'])
-            item_source_claim = pywikibot.Claim(site, 'P248', isReference=True)
-            # item_source_claim = pywikibot.Claim(site, 'P149', isReference=True)
+            # item_source_claim = pywikibot.Claim(site, 'P248', isReference=True)
+            item_source_claim = pywikibot.Claim(site, 'P149', isReference=True)
             item_source_claim.setTarget(trgt_itempage)
 
         if data['imported_from'] is not None:
             # P143 = imported from
             trgt_itempage = pywikibot.ItemPage(site, data['imported_from'])
-            item_source_claim = pywikibot.Claim(site, 'P143', isReference=True)
-            # item_source_claim = pywikibot.Claim(site, 'P9', isReference=True)
+            # item_source_claim = pywikibot.Claim(site, 'P143', isReference=True)
+            item_source_claim = pywikibot.Claim(site, 'P9', isReference=True)
             item_source_claim.setTarget(trgt_itempage)
 
         # P813 = retrieved
-        date_source_claim = pywikibot.Claim(site, 'P813', isReference=True)
-        # date_source_claim = pywikibot.Claim(site, 'P388', isReference=True)
+        # date_source_claim = pywikibot.Claim(site, 'P813', isReference=True)
+        date_source_claim = pywikibot.Claim(site, 'P388', isReference=True)
         date = datetime.datetime.now()
         trgt_datetime = pywikibot.WbTime(year=date.year, month=date.month, day=date.day)
         date_source_claim.setTarget(trgt_datetime)
@@ -145,13 +167,17 @@ class ItemCreator:
         @return: The id of the new created item
         @rtype: string
         """
+
         item = ItemCreator.new_item(site)
         ItemCreator.add_terms(item, data)
         for key in data:
             if key != 'labels' and key != 'aliases' and key != 'descriptions' and key != 'source':
-                claim = ItemCreator.add_claim(site, item, key, data[key])
+                claim = ItemCreator.add_claim(site, item, key, data[key]['value'])
                 if claim is not None:
                     ItemCreator.add_sources(site, claim, data['source'])
+                    if 'qualifiers' in data[key]:
+                        ItemCreator.add_qualifiers(site, claim, data[key]['qualifiers'])
+
         return item.getID()
 
 
@@ -211,11 +237,11 @@ class ItemHelper:
 
         if mode == 'gender':
             if item_title == '0':
-                return 'Q6581072'
-                # return 'Q1341'
+                # return 'Q6581072'
+                return 'Q1341'
             elif item_title == '1':
-                return 'Q6581097'
-                # return 'Q505'
+                # return 'Q6581097'
+                return 'Q505'
         else:
             qids = ItemHelper.get_qids(APICaller.wbsearchentities(site, item_title, 'de'))
             qids += ItemHelper.get_qids(APICaller.wbsearchentities(site, item_title, 'en'))
@@ -223,20 +249,20 @@ class ItemHelper:
                 result = APICaller.wbgetentities(site, qids)
 
             for qid in qids:
-                if 'P31' in result['entities'][qid]['claims']:
-                    for claim in result['entities'][qid]['claims']['P31']:
-                # if 'P81' in result['entities'][qid]['claims']:
-                    # for claim in result['entities'][qid]['claims']['P81']:
-                        if mode == 'city' and claim['mainsnak']['datavalue']['value']['id'] == 'Q515':
-                        # if mode == 'city' and claim['mainsnak']['datavalue']['value']['id'] == 'Q2215':
+                # if 'P31' in result['entities'][qid]['claims']:
+                    # for claim in result['entities'][qid]['claims']['P31']:
+                if 'P81' in result['entities'][qid]['claims']:
+                    for claim in result['entities'][qid]['claims']['P81']:
+                        # if mode == 'city' and claim['mainsnak']['datavalue']['value']['id'] == 'Q515':
+                        if mode == 'city' and claim['mainsnak']['datavalue']['value']['id'] == 'Q2215':
                             return qid
-                        elif mode == 'family_name' and claim['mainsnak']['datavalue']['value']['id'] == 'Q101352':
-                        # elif mode == 'family_name' and claim['mainsnak']['datavalue']['value']['id'] == 'Q72891':
+                        # elif mode == 'family_name' and claim['mainsnak']['datavalue']['value']['id'] == 'Q101352':
+                        elif mode == 'family_name' and claim['mainsnak']['datavalue']['value']['id'] == 'Q72891':
                             return qid
-                        elif mode == 'given_name' and (
-                            claim['mainsnak']['datavalue']['value']['id'] == 'Q12308941' or
-                            claim['mainsnak']['datavalue']['value']['id'] == 'Q11879590'):
-                        #elif mode == 'given_name' and claim['mainsnak']['datavalue']['value']['id'] == 'Q72890':
+                        # elif mode == 'given_name' and (
+                            # claim['mainsnak']['datavalue']['value']['id'] == 'Q12308941' or
+                            # claim['mainsnak']['datavalue']['value']['id'] == 'Q11879590'):
+                        elif mode == 'given_name' and claim['mainsnak']['datavalue']['value']['id'] == 'Q72890':
                             return qid
 
         return None
