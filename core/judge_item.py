@@ -62,9 +62,7 @@ class ItemCreator:
         if claim.type == 'wikibase-item':
             target = pywikibot.ItemPage(site, data)
         elif claim.type == 'time':
-            year, month, day, model = data
-            # model_uri = "%s%s" % (site.concept_base_uri, model)
-            # target = pywikibot.WbTime(year=year, month=month, day=day, calendarmodel=model_uri)
+            year, month, day = data
             target = pywikibot.WbTime(year=year, month=month, day=day)
         elif claim.type == 'quantity':
             value, uncert, unit = data
@@ -94,7 +92,7 @@ class ItemCreator:
         for qualifier in qualifiers:
             wiki_qualifier = pywikibot.Claim(site, qualifier, isQualifier=True)
             if wiki_qualifier.type == 'time':
-                year, month, day, model = qualifiers[qualifier]
+                year, month, day = qualifiers[qualifier]
                 target = pywikibot.WbTime(year=year, month=month, day=day)
                 wiki_qualifier.setTarget(target)
                 claim.addQualifier(wiki_qualifier, bot=True, summary='A new qualifier was added to a claim by a bot')

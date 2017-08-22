@@ -282,15 +282,11 @@ class CSVParser:
         if year == '':
             return None
         elif month == '':
-            # Q12138 = Gregorian Calender Model
-            return [int(year), None, None, 'Q12138']
-            # return [int(year), None, None, 'Q72886']
+            return [int(year), None, None]
         elif day == '':
-            return [int(year), int(month), None, 'Q12138']
-            # return [int(year), int(month), None, 'Q72886']
+            return [int(year), int(month), None]
         else:
-            return [int(year), int(month), int(day), 'Q12138']
-            # return [int(year), int(month), int(day), 'Q72886']
+            return [int(year), int(month), int(day)]
 
 
 class CSVWriter:
