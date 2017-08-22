@@ -2,7 +2,6 @@ import csv
 from judge_item import ItemHelper
 
 
-
 class CSVParser:
     """
     Helper Class for parsing data out of a csv dict.
@@ -158,89 +157,110 @@ class CSVParser:
                                     }
 
         # P31 = instance of, Q5 = human
-        # data['P31'] = {'value': 'Q5'}
-        data['P82'] = {'value': 'Q26'}
+        if site.code == 'wikidata':
+            data['P31'] = {'value': 'Q5'}
+        elif site.code == 'test':
+            data['P82'] = {'value': 'Q26'}
 
         # P569 = date of birth
         date_of_birth = CSVParser.parse_date(row['G-J'], row['G-M'], row['G-T'])
         if date_of_birth is not None:
-            # data['P569'] = {'value': date_of_birth}
-            data['P18'] = {'value': date_of_birth}
+            if site.code == 'wikidata':
+                data['P569'] = {'value': date_of_birth}
+            elif site.code == 'test':
+                data['P18'] = {'value': date_of_birth}
 
         # P570 = date of death
         date_of_death = CSVParser.parse_date(row['T-J'], row['T-M'], row['T-T'])
         if date_of_death is not None:
-            # data['P570'] = {'value': date_of_death}
-            data['P25'] = {'value': date_of_death}
+            if site.code == 'wikidata':
+                data['P570'] = {'value': date_of_death}
+            elif site.code == 'test':
+                data['P25'] = {'value': date_of_death}
 
         # P21 = sex or gender
-        # data['P21'] = {'value': ItemHelper.get_qid(site, row['Geschlecht'], 'gender')}
-        data['P192'] = {'value': ItemHelper.get_qid(site, row['Geschlecht'], 'gender')}
+        if site.code == 'wikidata':
+            data['P21'] = {'value': ItemHelper.get_qid(site, row['Geschlecht'], 'gender')}
+        elif site.code == 'test':
+            data['P192'] = {'value': ItemHelper.get_qid(site, row['Geschlecht'], 'gender')}
 
         # P27 = country of citizenship, Q183 = Germany
-        # data['P27'] = {'value': 'Q183'}
-        data['P196'] = {'value': 'Q343'}
+        if site.code == 'wikidata':
+            data['P27'] = {'value': 'Q183'}
+        elif site.code == 'test':
+            data['P196'] = {'value': 'Q343'}
 
         # P19 = place of birth
         place_of_birth = ItemHelper.get_qid(site, row['G-Ort'], 'city')
         if place_of_birth is not None:
-            # data['P19'] = {'value': place_of_birth}
-            data['P342'] = {'value': place_of_birth}
-
-        # P20 = place of death
-        # place_of_death = ItemHelper.get_qid(site, row['S-Ort'], 'city')
-        # if place_of_death is not None:
-        # data['P20'] = place_of_death
-        # data['P764'] = place_of_death
+            if site.code == 'wikidata':
+                data['P19'] = {'value': place_of_birth}
+            elif site.code == 'test':
+                data['P342'] = {'value': place_of_birth}
 
         # P735 = given name
         given_name = ItemHelper.get_qid(site, row['Vorname'], 'given_name')
         if given_name is not None:
-            # data['P735'] = {'value': given_name}
-            data['P187'] = {'value': given_name}
+            if site.code == 'wikidata':
+                data['P735'] = {'value': given_name}
+            elif site.code == 'test':
+                data['P187'] = {'value': given_name}
 
         # P734 = family name
         family_name = ItemHelper.get_qid(site, row['Nachname'], 'family_name')
         if family_name is not None:
-            # data['P734'] = {'value': family_name}
-            data['P36616'] = {'value': family_name}
+            if site.code == 'wikidata':
+                data['P734'] = {'value': family_name}
+            elif site.code == 'test':
+                data['P36616'] = {'value': family_name}
 
         # P106 = occupation, Q16533 = judge
-        # data['P106'] = {'value': 'Q16533'}
-        data['P204'] = {'value': 'Q72884'}
+        if site.code == 'wikidata':
+            data['P106'] = {'value': 'Q16533'}
+        elif site.code == 'test':
+            data['P204'] = {'value': 'Q72884'}
 
         # P108 = employer, Q687323 = Federal Court of Justice of Germany
-        # data['P108'] = {'value': 'Q687323'}
-        data['P40101'] = {'value': 'Q79795'}
+        if site.code == 'wikidata':
+            data['P108'] = {'value': 'Q687323'}
+        elif site.code == 'test':
+            data['P40101'] = {'value': 'Q79795'}
 
         accession_date = CSVParser.parse_date(row['B-J'], row['B-M'], row['B-T'])
         if accession_date is not None:
             # P580 = start time
-            # data['P108']['qualifiers'] = {'P580': accession_date}
-            data['P40101']['qualifiers'] = {'P355': accession_date}
+            if site.code == 'wikidata':
+                data['P108']['qualifiers'] = {'P580': accession_date}
+            elif site.code == 'test':
+                data['P40101']['qualifiers'] = {'P355': accession_date}
 
         withdrawal_date = CSVParser.parse_date(row['A-J'], row['A-M'], row['A-T'])
         if withdrawal_date is not None:
             # P582 = end time
-            # data['P108']['qualifiers']['P582'] = withdrawal_date
-            data['P40101']['qualifiers']['P356'] = withdrawal_date
+            if site.code == 'wikidata':
+                data['P108']['qualifiers']['P582'] = withdrawal_date
+            elif site.code == 'test':
+                data['P40101']['qualifiers']['P356'] = withdrawal_date
 
         # Source of the data
         if row['Wikipedia'] == '0':
-            # data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
-            #                  'stated_in': 'Q32961325',
-            #                  'imported_from': None}
-            data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
-                              'stated_in': 'Q72885',
-                              'imported_from': None}
-
+            if site.code == 'wikidata':
+                data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
+                                  'stated_in': 'Q32961325',
+                                  'imported_from': None}
+            elif site.code == 'test':
+                data['source'] = {'reference_url': 'http://www.richter-im-internet.de',
+                                  'stated_in': 'Q72885',
+                                  'imported_from': None}
         else:
-            # data['source'] = {'reference_url': None,
-            #                  'stated_in': None,
-            #                  'imported_from': 'Q48183'}
-            data['source'] = {'reference_url': None,
-                              'stated_in': None,
-                              'imported_from': 'Q74404'}
+            if site.code == 'wikidata':
+                data['source'] = {'reference_url': None,
+                                  'stated_in': None,
+                                  'imported_from': 'Q48183'}
+            elif site.code == 'test':
+                data['source'] = {'reference_url': None,
+                                  'stated_in': None,
+                                  'imported_from': 'Q74404'}
 
         return data
 
