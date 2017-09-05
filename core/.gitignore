@@ -20,3 +20,4 @@ build
 dist
 docs/_build/
 pwd.txt
+config.yaml

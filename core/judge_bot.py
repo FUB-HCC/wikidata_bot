@@ -48,7 +48,7 @@ def main():
 
             for index, row in enumerate(reader):
                 try:
-                    if not ItemHelper.item_exist(site, row):
+                    # if not ItemHelper.item_exist(site, row):
                         logging.info("Check if item with name %s %s exist: False" % (row['Vorname'], row['Nachname']))
                         data = CSVParser.parse_data(site, row)
                         logging.info('Data for item parsed.')
@@ -76,9 +76,9 @@ def main():
                         logging.info("New item with was created, QID: %s " % qid)
                         CSVWriter.write_item_in_csv(result_file, qid, row['Vorname'], row['Nachname'])
                         logging.info("The item was saved to csv file")
-                    else:
-                        CSVWriter.write_item_in_csv(result_file, '', row['Vorname'], row['Nachname'])
-                        logging.info("Check if item with name %s %s exist: True" % (row['Vorname'], row['Nachname']))
+                    # else:
+                        # CSVWriter.write_item_in_csv(result_file, '', row['Vorname'], row['Nachname'])
+                        # logging.info("Check if item with name %s %s exist: True" % (row['Vorname'], row['Nachname']))
                 except ValueError as error:
                     logging.warning("ERROR: Value error for index %s: %s" % (str(index), repr(error)))
 
