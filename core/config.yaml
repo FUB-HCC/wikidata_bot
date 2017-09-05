@@ -1,7 +1,0 @@
-site:
-  language: 'test'
-  site: 'wikidata'
-data_file: 'namen.csv'
-log_file: 'log.txt'
-result_file: 'result.csv'
-edits_per_minute: 1000000
