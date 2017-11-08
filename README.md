@@ -1,6 +1,6 @@
 # wikidata_bot
 
-wikidat_bot is a project for doing a mass imports about german judges to Wikidata.
+wikidat_bot is a project for doing a import of data about german judges to Wikidata.
 
 ### Data
 
