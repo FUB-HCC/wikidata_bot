@@ -5,7 +5,7 @@ files:
     path:
     buffer:
     save_path:
-log: 'log/dev.log'
+log:
 mail:
   host:
   port:
