@@ -1,6 +1,6 @@
 # wikidata_bot
 
-Wikidata_bot is a bot to import data to Wikidata about judges who work or worked at the Federal Court of Justice of Germany. It was created in the course of the project http://www.richter-im-internet.de.
+Wikidata_bot is a bot to import data into Wikidata about judges who work or worked at the Federal Court of Justice of Germany. It was created in the course of the project http://www.richter-im-internet.de.
 
 ## Data-Format
 
