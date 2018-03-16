@@ -1,0 +1,15 @@
+language:
+site:
+files:
+  -
+    path:
+    buffer:
+    save_path:
+log: 'log/dev.log'
+mail:
+  host:
+  port:
+  password:
+  sender:
+  recipients:
+    -

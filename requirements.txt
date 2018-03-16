@@ -1,0 +1,10 @@
+pywikibot
+yaml
+logging
+json
+os
+smtplib
+email
+sys
+csv
+datetime
